@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import type { Task } from "./Board";
+import type { Task } from "../store/atoms";
 import { Trash2, Edit3 } from "lucide-react";
 
 interface CardProps {
   task: Task;
-  onUpdate?: (taskId: string, updates: Partial<Task>) => void;
+  onUpdate?: (params: { taskId: string; updates: Partial<Task> }) => void;
   onDelete?: (taskId: string) => void;
   isOverlay?: boolean;
 }
@@ -40,28 +40,32 @@ export function Card({
 
   const handleTitleSave = () => {
     if (title.trim()) {
-      onUpdate?.(task.id, { title: title.trim() });
+      onUpdate?.({ taskId: task.id, updates: { title: title.trim() } });
       setIsEditing(false);
     }
   };
 
   const handleDescriptionSave = () => {
-    onUpdate?.(task.id, { description: description.trim() });
+    onUpdate?.({
+      taskId: task.id,
+      updates: { description: description.trim() },
+    });
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent, isTitle: boolean) => {
+  const handleDescriptionKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      if (isTitle) {
-        handleTitleSave();
-      } else {
-        handleDescriptionSave();
-      }
+      handleDescriptionSave();
     } else if (e.key === "Escape") {
-      if (isTitle) {
-        setTitle(task.title);
-      } else {
-        setDescription(task.description || "");
-      }
+      setDescription(task.description || "");
+      setIsEditing(false);
+    }
+  };
+
+  const handleTitleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleTitleSave();
+    } else if (e.key === "Escape") {
+      setTitle(task.title);
       setIsEditing(false);
     }
   };
@@ -93,16 +97,14 @@ export function Card({
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                onBlur={handleTitleSave}
-                onKeyDown={(e) => handleKeyPress(e, true)}
+                onKeyDown={handleTitleKeyPress}
                 className="w-full font-medium text-gray-900 bg-white border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 autoFocus
               />
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                onBlur={handleDescriptionSave}
-                onKeyDown={(e) => handleKeyPress(e, false)}
+                onKeyDown={handleDescriptionKeyDown}
                 placeholder="Add a description..."
                 className="w-full text-sm text-gray-600 bg-white border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 rows={2}

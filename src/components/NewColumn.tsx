@@ -1,14 +1,13 @@
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
+import { useSetAtom } from "jotai";
+import { addColumnAtom } from "../store/atoms";
 
-export const NewColumn = ({
-  onAddColumn,
-}: {
-  onAddColumn?: (title: string) => void;
-}) => {
+export const NewColumn = () => {
   const [title, setTitle] = useState("");
+  const addColumn = useSetAtom(addColumnAtom);
   const createColumn = () => {
-    onAddColumn?.(title);
+    addColumn(title);
     setTitle("");
   };
 

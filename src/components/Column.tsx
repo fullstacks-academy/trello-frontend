@@ -1,35 +1,24 @@
-import { useState } from "react";
+import { useDroppable } from "@dnd-kit/core";
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { useDroppable } from "@dnd-kit/core";
+import { Edit3, Plus, Trash2 } from "lucide-react";
+import { useState } from "react";
+import type { Column as ColumnType, Task } from "../store/atoms";
+import { useBoardState } from "../store/useBoardState";
 import { Card } from "./Card";
-import type { Task, Column as ColumnType } from "./Board";
-import { Plus, Trash2, Edit3 } from "lucide-react";
 
 interface ColumnProps {
   column: ColumnType;
   tasks: Task[];
-  onAddTask: (columnId: string) => void;
-  onUpdateTask?: (taskId: string, updates: Partial<Task>) => void;
-  onDeleteTask?: (taskId: string) => void;
-  onDeleteColumn?: (columnId: string) => void;
 }
 
-export function Column({
-  column,
-  tasks,
-  onAddTask,
-  onUpdateTask,
-  onDeleteTask,
-  onDeleteColumn,
-}: ColumnProps) {
+export function Column({ column, tasks }: ColumnProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(column.title);
-  const { setNodeRef } = useDroppable({
-    id: column.id,
-  });
+  const { setNodeRef } = useDroppable({ id: column.id });
+  const { updateTask, deleteTask, addTask, deleteColumn } = useBoardState();
 
   const handleTitleSave = () => {
     if (title.trim()) {
@@ -82,7 +71,7 @@ export function Column({
                 <Edit3 size={14} />
               </button>
               <button
-                onClick={() => onDeleteColumn?.(column.id)}
+                onClick={() => deleteColumn(column.id)}
                 className="p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
                 title="Delete column"
               >
@@ -101,8 +90,8 @@ export function Column({
                   <Card
                     key={task.id}
                     task={task}
-                    onUpdate={onUpdateTask}
-                    onDelete={onDeleteTask}
+                    onUpdate={(params) => updateTask(params)}
+                    onDelete={(taskId) => deleteTask(taskId)}
                   />
                 ))}
               </div>
@@ -111,7 +100,7 @@ export function Column({
         </div>
 
         <button
-          onClick={() => onAddTask(column.id)}
+          onClick={() => addTask(column.id)}
           className="w-full mt-3 p-2 cursor-pointer text-gray-500 hover:text-gray-700 hover:bg-gray-200 rounded-md transition-colors flex items-center justify-center gap-2"
         >
           <Plus size={16} />
