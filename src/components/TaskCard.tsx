@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { Task } from "../store/atoms";
-import { Trash2, Edit3 } from "lucide-react";
+import { Trash2, Edit3, Check } from "lucide-react";
 import { Card, CardContent } from "../ui/Card";
 import { Input } from "../ui/Input";
 import { Textarea } from "../ui/Textarea";
@@ -69,6 +69,11 @@ export function TaskCard({ task, onUpdate, onDelete, isOverlay }: Props) {
     }
   };
 
+  const handleConfirm = () => {
+    handleTitleSave();
+    handleDescriptionSave();
+  };
+
   if (isOverlay) {
     return (
       <Card className="w-72">
@@ -115,14 +120,14 @@ export function TaskCard({ task, onUpdate, onDelete, isOverlay }: Props) {
             ) : (
               <div className="space-y-2">
                 <h4
-                  className="font-medium text-gray-900 text-sm cursor-pointer hover:bg-gray-50 p-1 rounded"
+                  className="font-medium text-gray-900 text-sm cursor-pointer hover:bg-gray-50 py-1 px-2 rounded"
                   onClick={() => setIsEditing(true)}
                 >
                   {task.title}
                 </h4>
                 {task.description && (
                   <p
-                    className="text-sm text-gray-600 cursor-pointer hover:bg-gray-50 p-1 rounded"
+                    className="text-sm text-gray-600 cursor-pointer hover:bg-gray-50 py-1 px-2 rounded"
                     onClick={() => setIsEditing(true)}
                   >
                     {task.description}
@@ -133,16 +138,21 @@ export function TaskCard({ task, onUpdate, onDelete, isOverlay }: Props) {
           </div>
 
           <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            <IconButton
-              size="sm"
-              onClick={() => setIsEditing(true)}
-              title="Edit card"
-            >
-              <Edit3 size={12} />
-            </IconButton>
+            {isEditing ? (
+              <IconButton
+                variant="c2a"
+                onClick={handleConfirm}
+                title="Confirm changes"
+              >
+                <Check size={12} />
+              </IconButton>
+            ) : (
+              <IconButton onClick={() => setIsEditing(true)} title="Edit card">
+                <Edit3 size={12} />
+              </IconButton>
+            )}
             <IconButton
               variant="destructive"
-              size="sm"
               onClick={() => onDelete?.(task.id)}
               title="Delete card"
             >

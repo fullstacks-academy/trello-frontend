@@ -68,7 +68,7 @@ export function Board() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 p-4">
-      <div className="max-w-7xl w-full flex-1 mx-auto flex flex-col gap-6">
+      <div className="max-w-[1500px] w-full flex-1 mx-auto flex flex-col gap-6">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Board</h1>
           <p className="text-gray-600">

@@ -16,7 +16,7 @@ export const NewColumn = () => {
 
   return (
     <div className="flex-shrink-0 w-80">
-      <Card className="border-2 border-dashed border-gray-300">
+      <Card className="border-2 border-dashed border-gray-300 bg-transparent">
         <CardContent className="p-4">
           <div className="flex items-center gap-2 mb-3">
             <Input
