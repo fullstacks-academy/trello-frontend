@@ -11,6 +11,7 @@ import {
   deleteColumnAtom,
   moveTaskAtom,
   reorderTasksAtom,
+  reorderColumnsAtom,
   type Task,
   type Column,
 } from "./atoms";
@@ -28,6 +29,7 @@ export function useBoardState() {
   const deleteColumn = useSetAtom(deleteColumnAtom);
   const moveTask = useSetAtom(moveTaskAtom);
   const reorderTasks = useSetAtom(reorderTasksAtom);
+  const reorderColumns = useSetAtom(reorderColumnsAtom);
 
   return {
     // State
@@ -44,6 +46,7 @@ export function useBoardState() {
     deleteColumn,
     moveTask,
     reorderTasks,
+    reorderColumns,
     setActiveTask,
   };
 }

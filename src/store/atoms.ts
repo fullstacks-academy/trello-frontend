@@ -143,3 +143,18 @@ export const reorderTasksAtom = atom(
     set(tasksAtom, newTasks);
   }
 );
+
+export const reorderColumnsAtom = atom(
+  null,
+  (
+    get,
+    set,
+    { oldIndex, newIndex }: { oldIndex: number; newIndex: number }
+  ) => {
+    const columns = get(columnsAtom);
+    const newColumns = [...columns];
+    const [movedColumn] = newColumns.splice(oldIndex, 1);
+    newColumns.splice(newIndex, 0, movedColumn);
+    set(columnsAtom, newColumns);
+  }
+);

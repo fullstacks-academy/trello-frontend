@@ -7,10 +7,13 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { SortableContext } from "@dnd-kit/sortable";
+import {
+  SortableContext,
+  horizontalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import { TaskCard } from "./TaskCard";
-import { Column } from "./Column";
+import { SortableColumn } from "./SortableColumn";
 import { NewColumn } from "./NewColumn";
 import { useBoardState } from "../store/useBoardState";
 
@@ -22,6 +25,7 @@ export function Board() {
     tasksByColumn,
     moveTask,
     reorderTasks,
+    reorderColumns,
     setActiveTask,
   } = useBoardState();
 
@@ -50,19 +54,35 @@ export function Board() {
 
     const isActiveTask = tasks.find((task) => task.id === activeId);
     const isOverTask = tasks.find((task) => task.id === overId);
+    const isOverColumn = columns.find((col) => col.id === overId);
 
+    // Only handle task dragging in onDragOver
     if (!isActiveTask) return;
 
     if (isOverTask) {
       const oldIndex = tasks.findIndex((t) => t.id === activeId);
       const newIndex = tasks.findIndex((t) => t.id === overId);
       reorderTasks({ oldIndex, newIndex });
-    } else {
+    } else if (isOverColumn) {
       moveTask({ taskId: activeId as string, newColumnId: overId as string });
     }
   };
 
-  const handleDragEnd = () => {
+  const handleDragEnd = (event: DragOverEvent) => {
+    const { active, over } = event;
+
+    // Handle column reordering only in onDragEnd
+    if (active && over && active.id !== over.id) {
+      const isActiveColumn = columns.find((col) => col.id === active.id);
+      const isOverColumn = columns.find((col) => col.id === over.id);
+
+      if (isActiveColumn && isOverColumn) {
+        const oldIndex = columns.findIndex((col) => col.id === active.id);
+        const newIndex = columns.findIndex((col) => col.id === over.id);
+        reorderColumns({ oldIndex, newIndex });
+      }
+    }
+
     setActiveTask(undefined);
   };
 
@@ -82,10 +102,13 @@ export function Board() {
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <div className="flex flex-1 gap-4 overflow-x-auto">
-            <SortableContext items={columns.map((col) => col.id)}>
+          <div className="flex flex-1 gap-4 overflow-x-auto p-2">
+            <SortableContext
+              items={columns.map((col) => col.id)}
+              strategy={horizontalListSortingStrategy}
+            >
               {columns.map((column) => (
-                <Column
+                <SortableColumn
                   key={column.id}
                   column={column}
                   tasks={tasksByColumn[column.id]}
