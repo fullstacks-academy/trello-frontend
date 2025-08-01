@@ -7,7 +7,10 @@ import { Edit3, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { Column as ColumnType, Task } from "../store/atoms";
 import { useBoardState } from "../store/useBoardState";
-import { Card } from "./Card";
+import { Button } from "../ui/Button";
+import { Input } from "../ui/Input";
+import { Badge } from "../ui/Badge";
+import { TaskCard } from "./TaskCard";
 
 interface ColumnProps {
   column: ColumnType;
@@ -46,37 +49,41 @@ export function Column({ column, tasks }: ColumnProps) {
                 style={{ backgroundColor: column.color }}
               />
               {isEditing ? (
-                <input
+                <Input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   onBlur={handleTitleSave}
                   onKeyDown={handleKeyPress}
-                  className="font-semibold text-gray-900 bg-white border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="font-semibold text-gray-900"
                   autoFocus
                 />
               ) : (
                 <h3 className="font-semibold text-gray-900">{column.title}</h3>
               )}
-              <span className="text-sm text-gray-500 bg-gray-200 px-2 py-1 rounded-full">
+              <Badge variant="secondary" className="text-xs">
                 {tasks.length}
-              </span>
+              </Badge>
             </div>
             <div className="flex items-center gap-1">
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => setIsEditing(true)}
-                className="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded transition-colors"
+                className="h-8 w-8"
                 title="Edit column"
               >
                 <Edit3 size={14} />
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => deleteColumn(column.id)}
-                className="p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50"
                 title="Delete column"
               >
                 <Trash2 size={14} />
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -87,7 +94,7 @@ export function Column({ column, tasks }: ColumnProps) {
             >
               <div className="space-y-2">
                 {tasks.map((task) => (
-                  <Card
+                  <TaskCard
                     key={task.id}
                     task={task}
                     onUpdate={(params) => updateTask(params)}
@@ -99,13 +106,14 @@ export function Column({ column, tasks }: ColumnProps) {
           </div>
         </div>
 
-        <button
+        <Button
+          variant="ghost"
           onClick={() => addTask(column.id)}
-          className="w-full mt-3 p-2 cursor-pointer text-gray-500 hover:text-gray-700 hover:bg-gray-200 rounded-md transition-colors flex items-center justify-center gap-2"
+          className="w-full mt-3 text-gray-500 hover:text-gray-700 hover:bg-gray-200"
         >
-          <Plus size={16} />
+          <Plus size={16} className="mr-2" />
           Add a card
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
-import { Card } from "./Card";
+import { TaskCard } from "./TaskCard";
 import { Column } from "./Column";
 import { NewColumn } from "./NewColumn";
 import { useBoardState } from "../store/useBoardState";
@@ -97,7 +97,7 @@ export function Board() {
 
           {createPortal(
             <DragOverlay>
-              {activeTask ? <Card task={activeTask} isOverlay /> : null}
+              {activeTask ? <TaskCard task={activeTask} isOverlay /> : null}
             </DragOverlay>,
             document.body
           )}
