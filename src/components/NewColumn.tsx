@@ -2,9 +2,9 @@ import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { useSetAtom } from "jotai";
 import { addColumnAtom } from "../store/atoms";
-import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { Card, CardContent } from "../ui/Card";
+import { IconButton } from "../ui/IconButton";
 
 export const NewColumn = () => {
   const [title, setTitle] = useState("");
@@ -30,15 +30,9 @@ export const NewColumn = () => {
                 }
               }}
             />
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={createColumn}
-              className="h-10 w-10"
-              title="Add column"
-            >
+            <IconButton onClick={createColumn} title="Add column">
               <PlusCircle size={20} />
-            </Button>
+            </IconButton>
           </div>
           <p className="text-sm text-gray-500">Add a new column</p>
         </CardContent>

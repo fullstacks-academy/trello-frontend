@@ -10,6 +10,7 @@ import { useBoardState } from "../store/useBoardState";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { Badge } from "../ui/Badge";
+import { IconButton } from "../ui/IconButton";
 import { TaskCard } from "./TaskCard";
 
 interface ColumnProps {
@@ -66,24 +67,19 @@ export function Column({ column, tasks }: ColumnProps) {
               </Badge>
             </div>
             <div className="flex items-center gap-1">
-              <Button
-                variant="ghost"
-                size="icon"
+              <IconButton
                 onClick={() => setIsEditing(true)}
-                className="h-8 w-8"
                 title="Edit column"
               >
                 <Edit3 size={14} />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
+              </IconButton>
+              <IconButton
+                variant="destructive"
                 onClick={() => deleteColumn(column.id)}
-                className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50"
                 title="Delete column"
               >
                 <Trash2 size={14} />
-              </Button>
+              </IconButton>
             </div>
           </div>
 

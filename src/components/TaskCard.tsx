@@ -4,9 +4,9 @@ import { CSS } from "@dnd-kit/utilities";
 import type { Task } from "../store/atoms";
 import { Trash2, Edit3 } from "lucide-react";
 import { Card, CardContent } from "../ui/Card";
-import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { Textarea } from "../ui/Textarea";
+import { IconButton } from "../ui/IconButton";
 
 interface Props {
   task: Task;
@@ -81,7 +81,6 @@ export function TaskCard({ task, onUpdate, onDelete, isOverlay }: Props) {
       </Card>
     );
   }
-  console.log({ attributes, listeners });
 
   return (
     <Card
@@ -134,24 +133,21 @@ export function TaskCard({ task, onUpdate, onDelete, isOverlay }: Props) {
           </div>
 
           <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            <Button
-              variant="ghost"
-              size="icon"
+            <IconButton
+              size="sm"
               onClick={() => setIsEditing(true)}
-              className="h-6 w-6 p-1"
               title="Edit card"
             >
               <Edit3 size={12} />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
+            </IconButton>
+            <IconButton
+              variant="destructive"
+              size="sm"
               onClick={() => onDelete?.(task.id)}
-              className="h-6 w-6 p-1 text-red-600 hover:text-red-700 hover:bg-red-50"
               title="Delete card"
             >
               <Trash2 size={12} />
-            </Button>
+            </IconButton>
           </div>
         </div>
       </CardContent>
