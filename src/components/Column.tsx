@@ -5,8 +5,13 @@ import {
 } from "@dnd-kit/sortable";
 import { Edit3, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
-import type { Column as ColumnType, Task } from "../store/atoms";
-import { useBoardState } from "../store/useBoardState";
+import type { Column as ColumnType, Task } from "../lib/apiClient";
+import {
+  useCreateTask,
+  useUpdateTask,
+  useDeleteTask,
+  useDeleteColumn,
+} from "../lib/useBoard";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { Badge } from "../ui/Badge";
@@ -22,7 +27,10 @@ export function Column({ column, tasks }: ColumnProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(column.title);
   const { setNodeRef } = useDroppable({ id: column.id });
-  const { updateTask, deleteTask, addTask, deleteColumn } = useBoardState();
+  const createTaskMutation = useCreateTask();
+  const updateTaskMutation = useUpdateTask();
+  const deleteTaskMutation = useDeleteTask();
+  const deleteColumnMutation = useDeleteColumn();
 
   const handleTitleSave = () => {
     if (title.trim()) {
@@ -44,10 +52,6 @@ export function Column({ column, tasks }: ColumnProps) {
       <div className="bg-gray-50 rounded-lg p-4 h-full flex flex-col justify-between gap-4">
         <div className="flex-0 flex flex-row justify-between">
           <div className="flex items-center gap-2">
-            <div
-              className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: column.color }}
-            />
             {isEditing ? (
               <Input
                 type="text"
@@ -71,7 +75,7 @@ export function Column({ column, tasks }: ColumnProps) {
             </IconButton>
             <IconButton
               variant="destructive"
-              onClick={() => deleteColumn(column.id)}
+              onClick={() => deleteColumnMutation.mutate({ id: column.id })}
               title="Delete column"
             >
               <Trash2 size={14} />
@@ -89,8 +93,24 @@ export function Column({ column, tasks }: ColumnProps) {
                 <TaskCard
                   key={task.id}
                   task={task}
-                  onUpdate={(params) => updateTask(params)}
-                  onDelete={(taskId) => deleteTask(taskId)}
+                  onUpdate={(params) => {
+                    const currentTask = tasks.find(
+                      (t) => t.id === params.taskId
+                    );
+                    if (currentTask) {
+                      updateTaskMutation.mutate({
+                        id: params.taskId,
+                        title: params.updates.title || currentTask.title,
+                        description:
+                          params.updates.description ||
+                          currentTask.description ||
+                          "",
+                      });
+                    }
+                  }}
+                  onDelete={(taskId) =>
+                    deleteTaskMutation.mutate({ id: taskId })
+                  }
                 />
               ))}
             </div>
@@ -98,7 +118,15 @@ export function Column({ column, tasks }: ColumnProps) {
 
           <Button
             variant="ghost"
-            onClick={() => addTask(column.id)}
+            onClick={() => {
+              const newTaskId = `task-${Date.now()}`;
+              createTaskMutation.mutate({
+                id: newTaskId,
+                title: "New Task",
+                description: "Add description here",
+                columnId: column.id,
+              });
+            }}
             className="w-full mt-3 text-gray-500 hover:text-gray-700 hover:bg-gray-200"
           >
             <Plus size={16} className="mr-2" />

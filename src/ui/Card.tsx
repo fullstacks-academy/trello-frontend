@@ -3,7 +3,6 @@ import { cn } from "./cn";
 interface CardProps extends React.ComponentProps<"div"> {}
 
 export function Card({ className, ...props }: CardProps) {
-  console.log("Card", props);
   return (
     <div
       className={cn(

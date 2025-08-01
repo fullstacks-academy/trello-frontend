@@ -12,22 +12,25 @@ import {
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
+import { useState } from "react";
 import { TaskCard } from "./TaskCard";
 import { SortableColumn } from "./SortableColumn";
 import { NewColumn } from "./NewColumn";
-import { useBoardState } from "../store/useBoardState";
+import {
+  useBoard,
+  useMoveTask,
+  useReorderTasks,
+  useReorderColumns,
+} from "../lib/useBoard";
+import type { Task } from "../lib/apiClient";
 
 export function Board() {
-  const {
-    columns,
-    tasks,
-    activeTask,
-    tasksByColumn,
-    moveTask,
-    reorderTasks,
-    reorderColumns,
-    setActiveTask,
-  } = useBoardState();
+  const { data: boardData, isLoading, error } = useBoard();
+  const moveTaskMutation = useMoveTask();
+  const reorderTasksMutation = useReorderTasks();
+  const reorderColumnsMutation = useReorderColumns();
+
+  const [activeTask, setActiveTask] = useState<Task | undefined>(undefined);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -36,6 +39,48 @@ export function Board() {
       },
     })
   );
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading board...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="text-center">
+          <p className="text-red-600 mb-2">Error loading board</p>
+          <p className="text-gray-600 text-sm">{error.message}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!boardData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="text-center">
+          <p className="text-gray-600">No board data available</p>
+        </div>
+      </div>
+    );
+  }
+
+  const { columns, tasks } = boardData;
+
+  const tasksByColumn = tasks.reduce((acc, task) => {
+    if (!acc[task.column_id]) {
+      acc[task.column_id] = [];
+    }
+    acc[task.column_id].push(task);
+    return acc;
+  }, {} as Record<string, Task[]>);
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
@@ -56,22 +101,48 @@ export function Board() {
     const isOverTask = tasks.find((task) => task.id === overId);
     const isOverColumn = columns.find((col) => col.id === overId);
 
-    // Only handle task dragging in onDragOver
     if (!isActiveTask) return;
 
     if (isOverTask) {
-      const oldIndex = tasks.findIndex((t) => t.id === activeId);
-      const newIndex = tasks.findIndex((t) => t.id === overId);
-      reorderTasks({ oldIndex, newIndex });
+      const oldTaskColumnId = isActiveTask.column_id;
+      const newTaskColumnId = isOverTask.column_id;
+
+      if (oldTaskColumnId === newTaskColumnId) {
+        const columnTasks = tasks.filter(
+          (task) => task.column_id === oldTaskColumnId
+        );
+        const oldIndex = columnTasks.findIndex((task) => task.id === activeId);
+        const newIndex = columnTasks.findIndex((task) => task.id === overId);
+
+        if (oldIndex !== -1 && newIndex !== -1) {
+          const reorderedTasks = [...columnTasks];
+          const [movedTask] = reorderedTasks.splice(oldIndex, 1);
+          reorderedTasks.splice(newIndex, 0, movedTask);
+
+          const updatedTasks = reorderedTasks.map((task, index) => ({
+            ...task,
+            order_index: index,
+          }));
+
+          reorderTasksMutation.mutate({ tasks: updatedTasks });
+        }
+      } else {
+        moveTaskMutation.mutate({
+          taskId: activeId as string,
+          newColumnId: newTaskColumnId,
+        });
+      }
     } else if (isOverColumn) {
-      moveTask({ taskId: activeId as string, newColumnId: overId as string });
+      moveTaskMutation.mutate({
+        taskId: activeId as string,
+        newColumnId: overId as string,
+      });
     }
   };
 
   const handleDragEnd = (event: DragOverEvent) => {
     const { active, over } = event;
 
-    // Handle column reordering only in onDragEnd
     if (active && over && active.id !== over.id) {
       const isActiveColumn = columns.find((col) => col.id === active.id);
       const isOverColumn = columns.find((col) => col.id === over.id);
@@ -79,7 +150,12 @@ export function Board() {
       if (isActiveColumn && isOverColumn) {
         const oldIndex = columns.findIndex((col) => col.id === active.id);
         const newIndex = columns.findIndex((col) => col.id === over.id);
-        reorderColumns({ oldIndex, newIndex });
+
+        const newColumns = [...columns];
+        const [movedColumn] = newColumns.splice(oldIndex, 1);
+        newColumns.splice(newIndex, 0, movedColumn);
+
+        reorderColumnsMutation.mutate({ columns: newColumns });
       }
     }
 
@@ -111,7 +187,7 @@ export function Board() {
                 <SortableColumn
                   key={column.id}
                   column={column}
-                  tasks={tasksByColumn[column.id]}
+                  tasks={tasksByColumn[column.id] || []}
                 />
               ))}
             </SortableContext>

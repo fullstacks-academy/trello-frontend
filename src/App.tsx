@@ -1,12 +1,19 @@
-import { Provider } from "jotai";
 import { Board } from "./components/Board";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-function App() {
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+      retry: 1,
+    },
+  },
+});
+
+export function App() {
   return (
-    <Provider>
+    <QueryClientProvider client={queryClient}>
       <Board />
-    </Provider>
+    </QueryClientProvider>
   );
 }
-
-export default App;

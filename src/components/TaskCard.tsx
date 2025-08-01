@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import type { Task } from "../store/atoms";
+import type { Task } from "../lib/apiClient";
 import { Trash2, Edit3, Check } from "lucide-react";
 import { Card, CardContent } from "../ui/Card";
 import { Input } from "../ui/Input";

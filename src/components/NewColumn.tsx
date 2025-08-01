@@ -1,17 +1,20 @@
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
-import { useSetAtom } from "jotai";
-import { addColumnAtom } from "../store/atoms";
+import { useCreateColumn } from "../lib/useBoard";
 import { Input } from "../ui/Input";
 import { Card, CardContent } from "../ui/Card";
 import { IconButton } from "../ui/IconButton";
 
 export const NewColumn = () => {
   const [title, setTitle] = useState("");
-  const addColumn = useSetAtom(addColumnAtom);
+  const createColumnMutation = useCreateColumn();
+
   const createColumn = () => {
-    addColumn(title);
-    setTitle("");
+    if (title.trim()) {
+      const newColumnId = `col-${Date.now()}`;
+      createColumnMutation.mutate({ id: newColumnId, title: title.trim() });
+      setTitle("");
+    }
   };
 
   return (
