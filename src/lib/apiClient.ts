@@ -89,6 +89,10 @@ class ApiClient {
   async deleteTask(id: string) {
     return this.client.delete<{ success: boolean }>(`/tasks/${id}`);
   }
+
+  async updateColumn(id: string, title: string) {
+    return this.client.put<Column>(`/columns/${id}`, { title });
+  }
 }
 
 export const apiClient = new ApiClient(new HttpClient(API_BASE_URL));

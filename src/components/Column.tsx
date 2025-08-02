@@ -83,7 +83,10 @@ export function Column({ column, tasks }: ColumnProps) {
           </div>
         </div>
 
-        <div ref={setNodeRef} className="flex-1 bg-gray-100 rounded-lg p-2">
+        <div
+          ref={setNodeRef}
+          className="flex-1 bg-gray-100 rounded-lg p-2 flex flex-col gap-3"
+        >
           <SortableContext
             items={tasks.map((task) => task.id)}
             strategy={verticalListSortingStrategy}
@@ -127,7 +130,6 @@ export function Column({ column, tasks }: ColumnProps) {
                 columnId: column.id,
               });
             }}
-            className="w-full mt-3 text-gray-500 hover:text-gray-700 hover:bg-gray-200"
           >
             <Plus size={16} className="mr-2" />
             Add a card
