@@ -37,7 +37,7 @@ export function Board() {
       activationConstraint: {
         distance: 8,
       },
-    })
+    }),
   );
 
   if (isLoading) {
@@ -74,13 +74,16 @@ export function Board() {
 
   const { columns, tasks } = boardData;
 
-  const tasksByColumn = tasks.reduce((acc, task) => {
-    if (!acc[task.column_id]) {
-      acc[task.column_id] = [];
-    }
-    acc[task.column_id].push(task);
-    return acc;
-  }, {} as Record<string, Task[]>);
+  const tasksByColumn = tasks.reduce(
+    (acc, task) => {
+      if (!acc[task.column_id]) {
+        acc[task.column_id] = [];
+      }
+      acc[task.column_id].push(task);
+      return acc;
+    },
+    {} as Record<string, Task[]>,
+  );
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
@@ -109,7 +112,7 @@ export function Board() {
 
       if (oldTaskColumnId === newTaskColumnId) {
         const columnTasks = tasks.filter(
-          (task) => task.column_id === oldTaskColumnId
+          (task) => task.column_id === oldTaskColumnId,
         );
         const oldIndex = columnTasks.findIndex((task) => task.id === activeId);
         const newIndex = columnTasks.findIndex((task) => task.id === overId);
@@ -198,7 +201,7 @@ export function Board() {
             <DragOverlay>
               {activeTask ? <TaskCard task={activeTask} isOverlay /> : null}
             </DragOverlay>,
-            document.body
+            document.body,
           )}
         </DndContext>
       </div>

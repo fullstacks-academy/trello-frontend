@@ -20,7 +20,7 @@ const iconButtonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export interface IconButtonProps

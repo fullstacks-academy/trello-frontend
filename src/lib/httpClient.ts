@@ -7,7 +7,7 @@ export class HttpClient {
 
   private async request<T>(
     endpoint: string,
-    options: Omit<RequestInit, "body"> & { body?: unknown } = {}
+    options: Omit<RequestInit, "body"> & { body?: unknown } = {},
   ): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
     const body = options.body ? JSON.stringify(options.body) : undefined;
