@@ -9,7 +9,7 @@ const queryClient = new QueryClient({
   mutationCache: new MutationCache({
     onSuccess: (_, __, ___, mutation) => {
       if (mutation.meta?.inaroInvalidateKon) {
-        queryClient.invalidateQueries(mutation.meta.inaroInvalidateKon);
+        queryClient.invalidateQueries(mutation.meta.inaroInvalidateKon)
       }
     },
   }),
