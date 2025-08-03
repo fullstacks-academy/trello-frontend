@@ -15,7 +15,7 @@ const variants = cva(
     defaultVariants: {
       size: "default",
     },
-  }
+  },
 );
 
 export interface TextareaProps

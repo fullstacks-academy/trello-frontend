@@ -56,7 +56,7 @@ class ApiClient {
     id: string,
     title: string,
     description: string,
-    columnId: string
+    columnId: string,
   ) {
     return this.client.post<Task>("/tasks", {
       id,

@@ -98,7 +98,7 @@ export function Column({ column, tasks }: ColumnProps) {
                   task={task}
                   onUpdate={(params) => {
                     const currentTask = tasks.find(
-                      (t) => t.id === params.taskId
+                      (t) => t.id === params.taskId,
                     );
                     if (currentTask) {
                       updateTaskMutation.mutate({

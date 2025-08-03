@@ -11,6 +11,8 @@ export const NewColumn = () => {
 
   const createColumn = () => {
     if (title.trim()) {
+
+
       const newColumnId = `col-${Date.now()}`;
       createColumnMutation.mutate({ id: newColumnId, title: title.trim() });
       setTitle("");

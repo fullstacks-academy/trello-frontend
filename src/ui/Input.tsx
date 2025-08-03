@@ -8,7 +8,7 @@ const variants = cva(
         true: "border-red-500",
       },
     },
-  }
+  },
 );
 export interface InputProps
   extends React.ComponentProps<"input">,
