@@ -27,10 +27,10 @@ export function Column({ column, tasks }: ColumnProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(column.title);
   const { setNodeRef } = useDroppable({ id: column.id });
-  const createTaskMutation = useCreateTask()
-  const updateTaskMutation = useUpdateTask()
-  const deleteTaskMutation = useDeleteTask()
-  const deleteColumnMutation = useDeleteColumn()
+  const createTaskMutation = useCreateTask();
+  const updateTaskMutation = useUpdateTask();
+  const deleteTaskMutation = useDeleteTask();
+  const deleteColumnMutation = useDeleteColumn();
 
   const handleTitleSave = () => {
     if (title.trim()) {
