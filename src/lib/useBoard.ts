@@ -15,14 +15,11 @@ export function useBoard() {
 }
 
 export function useCreateColumn() {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: ({ id, title }: { id: string; title: string }) =>
       apiClient.createColumn(id, title),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: boardKeys.all });
-      queryClient.invalidateQueries({ queryKey: boardKeys.columns() });
+    meta: {
+      inaroInvalidateKon: [boardKeys.all, boardKeys.columns()],
     },
   });
 }
