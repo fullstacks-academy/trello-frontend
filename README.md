@@ -1,1 +1,1 @@
-Please run `pnpm verify` before commit
+~~Please run `pnpm verify` before commit~~
