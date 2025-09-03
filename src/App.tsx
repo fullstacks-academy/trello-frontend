@@ -22,7 +22,6 @@ const queryClient = new QueryClient({
 });
 
 export function App() {
-  // Todo
   return (
     <QueryClientProvider client={queryClient}>
       <Board />
