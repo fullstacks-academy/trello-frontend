@@ -19,7 +19,7 @@ const queryClient = new QueryClient({
       retry: 1,
     },
   },
-});
+})
 
 export function App() {
   return (
