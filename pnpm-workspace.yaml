@@ -1,5 +1,6 @@
 onlyBuiltDependencies:
-  - "@tailwindcss/oxide"
+  - '@tailwindcss/oxide'
   - esbuild
+  - unrs-resolver
 
-savePrefix: ""
+savePrefix: ''

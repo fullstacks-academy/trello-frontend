@@ -1,9 +1,10 @@
-import { Board } from "./components/Board";
 import {
   MutationCache,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+
+import { Board } from "./components/Board";
 
 const queryClient = new QueryClient({
   mutationCache: new MutationCache({

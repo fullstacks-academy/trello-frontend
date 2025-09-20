@@ -27,19 +27,16 @@
     "tailwind-merge": "3.3.1"
   },
   "devDependencies": {
-    "@eslint/js": "9.36.0",
+    "@fullstacksjs/eslint-config": "13.4.0",
     "@tailwindcss/vite": "4.1.11",
     "@types/node": "24.1.0",
     "@types/react": "19.1.9",
     "@types/react-dom": "19.1.7",
     "@vitejs/plugin-react": "4.7.0",
     "eslint": "9.32.0",
-    "eslint-plugin-react": "7.37.5",
-    "globals": "16.4.0",
     "prettier": "3.6.2",
     "tailwindcss": "4.1.11",
     "typescript": "5.9.2",
-    "typescript-eslint": "8.44.0",
     "vite": "7.0.6"
   }
 }

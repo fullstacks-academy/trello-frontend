@@ -1,7 +1,9 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Column } from "./Column";
+
 import type { Column as ColumnType, Task } from "../lib/apiClient";
+
+import { Column } from "./Column";
 
 interface SortableColumnProps {
   column: ColumnType;
@@ -35,7 +37,7 @@ export function SortableColumn({ column, tasks }: SortableColumnProps) {
       {...listeners}
       className="cursor-grab flex flex-col active:cursor-grabbing"
     >
-      <Column column={column} tasks={tasks} />
+      <Column tasks={tasks} column={column} />
     </div>
   );
 }

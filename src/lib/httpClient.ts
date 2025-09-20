@@ -5,6 +5,22 @@ export class HttpClient {
     this.baseUrl = baseUrl;
   }
 
+  async delete<T>(endpoint: string) {
+    return this.request<T>(endpoint, { method: "DELETE" });
+  }
+
+  async get<T>(endpoint: string) {
+    return this.request<T>(endpoint);
+  }
+
+  async post<T>(endpoint: string, body: unknown) {
+    return this.request<T>(endpoint, { method: "POST", body });
+  }
+
+  async put<T>(endpoint: string, body: unknown) {
+    return this.request<T>(endpoint, { method: "PUT", body });
+  }
+
   private async request<T>(
     endpoint: string,
     options: Omit<RequestInit, "body"> & { body?: unknown } = {},
@@ -25,21 +41,5 @@ export class HttpClient {
     }
 
     return response.json();
-  }
-
-  async get<T>(endpoint: string) {
-    return this.request<T>(endpoint);
-  }
-
-  async post<T>(endpoint: string, body: unknown) {
-    return this.request<T>(endpoint, { method: "POST", body });
-  }
-
-  async delete<T>(endpoint: string) {
-    return this.request<T>(endpoint, { method: "DELETE" });
-  }
-
-  async put<T>(endpoint: string, body: unknown) {
-    return this.request<T>(endpoint, { method: "PUT", body });
   }
 }

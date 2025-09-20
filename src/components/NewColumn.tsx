@@ -1,9 +1,10 @@
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
+
 import { useCreateColumn } from "../lib/useBoard";
-import { Input } from "../ui/Input";
 import { Card, CardContent } from "../ui/Card";
 import { IconButton } from "../ui/IconButton";
+import { Input } from "../ui/Input";
 
 export const NewColumn = () => {
   const [title, setTitle] = useState("");
@@ -24,7 +25,6 @@ export const NewColumn = () => {
           <div className="flex items-center gap-2 mb-3">
             <Input
               type="text"
-              placeholder="New column title..."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               onKeyDown={(e) => {
@@ -32,8 +32,9 @@ export const NewColumn = () => {
                   createColumn();
                 }
               }}
+              placeholder="New column title..."
             />
-            <IconButton onClick={createColumn} title="Add column">
+            <IconButton title="Add column" onClick={createColumn}>
               <PlusCircle size={20} />
             </IconButton>
           </div>

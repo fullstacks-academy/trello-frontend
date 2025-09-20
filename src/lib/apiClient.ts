@@ -30,26 +30,8 @@ class ApiClient {
     this.client = client;
   }
 
-  async getBoard() {
-    return this.client.get<BoardData>("/board");
-  }
-
-  async getColumns() {
-    return this.client.get<Column[]>("/columns");
-  }
-
   async createColumn(id: string, title: string) {
     return this.client.post<Column>("/columns", { id, title });
-  }
-
-  async reorderColumns(columns: Column[]) {
-    return this.client.put<{ success: boolean }>("/columns/reorder", {
-      columns,
-    });
-  }
-
-  async deleteColumn(id: string) {
-    return this.client.delete<{ success: boolean }>(`/columns/${id}`);
   }
 
   async createTask(
@@ -66,11 +48,20 @@ class ApiClient {
     });
   }
 
-  async updateTask(id: string, title: string, description: string) {
-    return this.client.put<Task>(`/tasks/${id}`, {
-      title,
-      description,
-    });
+  async deleteColumn(id: string) {
+    return this.client.delete<{ success: boolean }>(`/columns/${id}`);
+  }
+
+  async deleteTask(id: string) {
+    return this.client.delete<{ success: boolean }>(`/tasks/${id}`);
+  }
+
+  async getBoard() {
+    return this.client.get<BoardData>("/board");
+  }
+
+  async getColumns() {
+    return this.client.get<Column[]>("/columns");
   }
 
   async moveTask(taskId: string, newColumnId: string) {
@@ -80,18 +71,27 @@ class ApiClient {
     });
   }
 
+  async reorderColumns(columns: Column[]) {
+    return this.client.put<{ success: boolean }>("/columns/reorder", {
+      columns,
+    });
+  }
+
   async reorderTasks(tasks: Task[]) {
     return this.client.put<{ success: boolean }>("/tasks/reorder", {
       tasks,
     });
   }
 
-  async deleteTask(id: string) {
-    return this.client.delete<{ success: boolean }>(`/tasks/${id}`);
-  }
-
   async updateColumn(id: string, title: string) {
     return this.client.put<Column>(`/columns/${id}`, { title });
+  }
+
+  async updateTask(id: string, title: string, description: string) {
+    return this.client.put<Task>(`/tasks/${id}`, {
+      title,
+      description,
+    });
   }
 }
 
