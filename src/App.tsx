@@ -1,12 +1,8 @@
 import { Board } from "./components/Board";
-import {
-  MutationCache,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient({
-  mutationCache: new MutationCache({
+  mutationCache: new utationCache({
     onSuccess: (_, __, ___, mutation) => {
       if (mutation.meta?.inaroInvalidateKon) {
         queryClient.invalidateQueries(mutation.meta.inaroInvalidateKon);
