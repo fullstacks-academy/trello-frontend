@@ -6,9 +6,8 @@ on:
       - main
 
 jobs:
-  format:
-    name: format
-    runs-on: ubuntu-latest
+  static-check:
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -18,4 +17,5 @@ jobs:
         with:
           node-version: 22.18.0
       - run: pnpm install
-      - run: pnpm verify
+      - run: pnpm format
+      - run: pnpm lint
