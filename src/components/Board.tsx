@@ -1,6 +1,6 @@
+import type { DragOverEvent, DragStartEvent } from "@dnd-kit/core";
+
 import {
-  type DragOverEvent,
-  type DragStartEvent,
   DndContext,
   DragOverlay,
   PointerSensor,
@@ -8,22 +8,25 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import {
-  SortableContext,
   horizontalListSortingStrategy,
+  SortableContext,
 } from "@dnd-kit/sortable";
-import { createPortal } from "react-dom";
 import { useState } from "react";
-import { TaskCard } from "./TaskCard";
-import { SortableColumn } from "./SortableColumn";
-import { NewColumn } from "./NewColumn";
+import { createPortal } from "react-dom";
+
+import type { Task } from "../lib/apiClient";
+
 import {
   useBoard,
   useMoveTask,
-  useReorderTasks,
   useReorderColumns,
+  useReorderTasks,
 } from "../lib/useBoard";
-import type { Task } from "../lib/apiClient";
+import { NewColumn } from "./NewColumn";
+import { SortableColumn } from "./SortableColumn";
+import { TaskCard } from "./TaskCard";
 
+// eslint-disable-next-line max-lines-per-function
 export function Board() {
   const { data: boardData, isLoading, error } = useBoard();
   const moveTaskMutation = useMoveTask();
@@ -176,10 +179,10 @@ export function Board() {
         </div>
 
         <DndContext
-          sensors={sensors}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
+          onDragOver={handleDragOver}
+          onDragStart={handleDragStart}
+          sensors={sensors}
         >
           <div className="flex flex-1 gap-4 overflow-x-auto p-2">
             <SortableContext
@@ -189,8 +192,8 @@ export function Board() {
               {columns.map((column) => (
                 <SortableColumn
                   key={column.id}
-                  column={column}
                   tasks={tasksByColumn[column.id] || []}
+                  column={column}
                 />
               ))}
             </SortableContext>
@@ -199,7 +202,7 @@ export function Board() {
 
           {createPortal(
             <DragOverlay>
-              {activeTask ? <TaskCard task={activeTask} isOverlay /> : null}
+              {activeTask ? <TaskCard isOverlay task={activeTask} /> : null}
             </DragOverlay>,
             document.body,
           )}

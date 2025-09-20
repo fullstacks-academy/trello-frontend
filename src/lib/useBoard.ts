@@ -1,5 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiClient, type Column, type Task } from "./apiClient";
+
+import type { Column, Task } from "./apiClient";
+
+import { apiClient } from "./apiClient";
 
 export const boardKeys = {
   all: ["board"] as const,

@@ -5,17 +5,19 @@ import {
 } from "@dnd-kit/sortable";
 import { Edit3, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
+
 import type { Column as ColumnType, Task } from "../lib/apiClient";
+
 import {
   useCreateTask,
-  useUpdateTask,
-  useDeleteTask,
   useDeleteColumn,
+  useDeleteTask,
+  useUpdateTask,
 } from "../lib/useBoard";
-import { Button } from "../ui/Button";
-import { Input } from "../ui/Input";
 import { Badge } from "../ui/Badge";
+import { Button } from "../ui/Button";
 import { IconButton } from "../ui/IconButton";
+import { Input } from "../ui/Input";
 import { TaskCard } from "./TaskCard";
 
 interface ColumnProps {
@@ -54,29 +56,29 @@ export function Column({ column, tasks }: ColumnProps) {
           <div className="flex items-center gap-2">
             {isEditing ? (
               <Input
+                className="font-semibold text-gray-900"
                 type="text"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                onBlur={handleTitleSave}
-                onKeyDown={handleKeyPress}
-                className="font-semibold text-gray-900"
                 autoFocus
+                onBlur={handleTitleSave}
+                onChange={(e) => setTitle(e.target.value)}
+                onKeyDown={handleKeyPress}
               />
             ) : (
               <h3 className="font-semibold text-gray-900">{column.title}</h3>
             )}
-            <Badge variant="secondary" className="text-xs">
+            <Badge className="text-xs" variant="secondary">
               {tasks.length}
             </Badge>
           </div>
           <div className="flex items-center gap-1">
-            <IconButton onClick={() => setIsEditing(true)} title="Edit column">
+            <IconButton title="Edit column" onClick={() => setIsEditing(true)}>
               <Edit3 size={14} />
             </IconButton>
             <IconButton
+              title="Delete column"
               variant="destructive"
               onClick={() => deleteColumnMutation.mutate({ id: column.id })}
-              title="Delete column"
             >
               <Trash2 size={14} />
             </IconButton>
@@ -84,8 +86,8 @@ export function Column({ column, tasks }: ColumnProps) {
         </div>
 
         <div
-          ref={setNodeRef}
           className="flex-1 bg-gray-100 rounded-lg p-2 flex flex-col gap-3"
+          ref={setNodeRef}
         >
           <SortableContext
             items={tasks.map((task) => task.id)}
@@ -96,6 +98,9 @@ export function Column({ column, tasks }: ColumnProps) {
                 <TaskCard
                   key={task.id}
                   task={task}
+                  onDelete={(taskId) =>
+                    deleteTaskMutation.mutate({ id: taskId })
+                  }
                   onUpdate={(params) => {
                     const currentTask = tasks.find(
                       (t) => t.id === params.taskId,
@@ -111,9 +116,6 @@ export function Column({ column, tasks }: ColumnProps) {
                       });
                     }
                   }}
-                  onDelete={(taskId) =>
-                    deleteTaskMutation.mutate({ id: taskId })
-                  }
                 />
               ))}
             </div>

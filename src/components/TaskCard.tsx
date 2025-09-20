@@ -1,12 +1,14 @@
-import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Check, Edit3, Trash2 } from "lucide-react";
+import { useState } from "react";
+
 import type { Task } from "../lib/apiClient";
-import { Trash2, Edit3, Check } from "lucide-react";
+
 import { Card, CardContent } from "../ui/Card";
+import { IconButton } from "../ui/IconButton";
 import { Input } from "../ui/Input";
 import { Textarea } from "../ui/Textarea";
-import { IconButton } from "../ui/IconButton";
 
 interface Props {
   task: Task;
@@ -15,6 +17,7 @@ interface Props {
   isOverlay?: boolean;
 }
 
+// eslint-disable-next-line max-lines-per-function
 export function TaskCard({ task, onUpdate, onDelete, isOverlay }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(task.title);
@@ -101,24 +104,25 @@ export function TaskCard({ task, onUpdate, onDelete, isOverlay }: Props) {
             {isEditing ? (
               <div className="space-y-2">
                 <Input
+                  className="text-sm"
                   type="text"
                   value={title}
+                  autoFocus
                   onChange={(e) => setTitle(e.target.value)}
                   onKeyDown={handleTitleKeyPress}
-                  className="text-sm"
-                  autoFocus
                 />
                 <Textarea
+                  className="text-sm resize-none"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   onKeyDown={handleDescriptionKeyDown}
                   placeholder="Add a description..."
-                  className="text-sm resize-none"
                   rows={2}
                 />
               </div>
             ) : (
               <div className="space-y-2">
+                {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
                 <h4
                   className="font-medium text-gray-900 text-sm cursor-pointer hover:bg-gray-50 py-1 px-2 rounded"
                   onClick={() => setIsEditing(true)}
@@ -126,6 +130,7 @@ export function TaskCard({ task, onUpdate, onDelete, isOverlay }: Props) {
                   {task.title}
                 </h4>
                 {task.description && (
+                  // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
                   <p
                     className="text-sm text-gray-600 cursor-pointer hover:bg-gray-50 py-1 px-2 rounded"
                     onClick={() => setIsEditing(true)}
@@ -140,21 +145,21 @@ export function TaskCard({ task, onUpdate, onDelete, isOverlay }: Props) {
           <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
             {isEditing ? (
               <IconButton
+                title="Confirm changes"
                 variant="c2a"
                 onClick={handleConfirm}
-                title="Confirm changes"
               >
                 <Check size={12} />
               </IconButton>
             ) : (
-              <IconButton onClick={() => setIsEditing(true)} title="Edit card">
+              <IconButton title="Edit card" onClick={() => setIsEditing(true)}>
                 <Edit3 size={12} />
               </IconButton>
             )}
             <IconButton
+              title="Delete card"
               variant="destructive"
               onClick={() => onDelete?.(task.id)}
-              title="Delete card"
             >
               <Trash2 size={12} />
             </IconButton>
