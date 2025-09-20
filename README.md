@@ -6,8 +6,8 @@
 - [x] CI Check -> GitHub Actions
 
 # Session 2
-- [ ] Type-check
-- [ ] Type-check -> CI Workflow
+- [x] Type-check
+- [x] Type-check -> CI Workflow
 - [x] Linter
 - [x] Linter -> CI Workflow
 
