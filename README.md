@@ -11,15 +11,25 @@
 - [x] Linter
 - [x] Linter -> CI Workflow
 
+- [x] Deno Type-check
+- [x] Deno Type-check -> CI Workflow
+- [x] Deno formatter
+- [x] Deno formatter -> CI Workflow
+- [x] Deno Linter
+- [x] Deno Linter -> CI Workflow
+
+# Session 3
 - [ ] Unit test
 - [ ] Test runner -> CI Workflow
 
-# Session 2.5
+# Session 4
 - [ ] Component test
 - [ ] Component test -> CI Workflow
-# Session 3
+
+# Session 5
 - [ ] UI Regression test
 - [ ] UI Acceptance -> Workflow
-# Session 4
+
+# Session 6
 - [ ] E2E Test
 - [ ] E2E Test -> CI Workflow
