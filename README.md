@@ -13,6 +13,8 @@
 
 - [ ] Unit test
 - [ ] Test runner -> CI Workflow
+
+# Session 2.5
 - [ ] Component test
 - [ ] Component test -> CI Workflow
 # Session 3

@@ -1,1 +1,2 @@
-pnpm run verify
+pnpm run format
+pnpm run lint
