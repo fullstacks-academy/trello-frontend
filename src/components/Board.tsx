@@ -22,6 +22,7 @@ import {
   useReorderColumns,
   useReorderTasks,
 } from "../lib/useBoard";
+import { groupTasksByColumn } from "../utils/groupTaskByColumn";
 import { NewColumn } from "./NewColumn";
 import { SortableColumn } from "./SortableColumn";
 import { TaskCard } from "./TaskCard";
@@ -77,16 +78,7 @@ export function Board() {
 
   const { columns, tasks } = boardData;
 
-  const tasksByColumn = tasks.reduce(
-    (acc, task) => {
-      if (!acc[task.column_id]) {
-        acc[task.column_id] = [];
-      }
-      acc[task.column_id].push(task);
-      return acc;
-    },
-    {} as Record<string, Task[]>,
-  );
+  const tasksByColumn = groupTasksByColumn(tasks);
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
