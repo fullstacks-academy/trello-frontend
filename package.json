@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --check ./src",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "vitest"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",
@@ -37,6 +38,7 @@
     "prettier": "3.6.2",
     "tailwindcss": "4.1.14",
     "typescript": "5.9.3",
-    "vite": "7.1.10"
+    "vite": "7.1.10",
+    "vitest": "3.2.4"
   }
 }
