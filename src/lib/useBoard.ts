@@ -22,7 +22,7 @@ export function useCreateColumn() {
     mutationFn: ({ id, title }: { id: string; title: string }) =>
       apiClient.createColumn(id, title),
     meta: {
-      inaroInvalidateKon: [boardKeys.all, boardKeys.columns()],
+      invalidates: [boardKeys.all, boardKeys.columns()],
     },
   });
 }

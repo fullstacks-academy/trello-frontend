@@ -19,8 +19,8 @@
 - [x] Deno Linter -> CI Workflow
 
 # Session 3
-- [ ] Unit test
-- [ ] Test runner -> CI Workflow
+- [x] Unit test (Frontend)
+- [x] Test runner -> CI Workflow (Frontend)
 
 # Session 4
 - [ ] Component test
@@ -31,5 +31,9 @@
 - [ ] UI Acceptance -> Workflow
 
 # Session 6
+- [ ] Unit test (Backend)
+- [ ] Test runner -> CI Workflow (Backend)
+
+# Session 7
 - [ ] E2E Test
 - [ ] E2E Test -> CI Workflow
