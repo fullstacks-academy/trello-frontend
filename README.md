@@ -31,8 +31,8 @@
 - [ ] UI Acceptance -> Workflow
 
 # Session 6
-- [x] Unit test (Frontend)
-- [x] Test runner -> CI Workflow (Frontend)
+- [ ] Unit test (Backend)
+- [ ] Test runner -> CI Workflow (Backend)
 
 # Session 7
 - [ ] E2E Test

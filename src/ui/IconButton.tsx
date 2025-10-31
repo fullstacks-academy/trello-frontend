@@ -15,8 +15,8 @@ const iconButtonVariants = cva(
         c2a: "text-green-900 hover:bg-green-50",
       },
       size: {
-        default: "h-6 w-6",
-        lg: "h-10 w-10",
+        default: "size-6",
+        lg: "size-10",
       },
     },
     defaultVariants: {

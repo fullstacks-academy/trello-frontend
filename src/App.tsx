@@ -9,8 +9,8 @@ import { Board } from "./components/Board";
 const queryClient = new QueryClient({
   mutationCache: new MutationCache({
     onSuccess: (_, __, ___, mutation) => {
-      if (mutation.meta?.inaroInvalidateKon) {
-        queryClient.invalidateQueries(mutation.meta.inaroInvalidateKon);
+      if (mutation.meta?.invalidates) {
+        queryClient.invalidateQueries(mutation.meta.invalidates);
       }
     },
   }),
@@ -23,7 +23,6 @@ const queryClient = new QueryClient({
 });
 
 export function App() {
-  // Todo
   return (
     <QueryClientProvider client={queryClient}>
       <Board />
