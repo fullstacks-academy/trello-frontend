@@ -1,7 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Check, Edit3, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import type { Task } from "../lib/apiClient";
 
@@ -12,16 +12,16 @@ import { Textarea } from "../ui/Textarea";
 
 interface Props {
   task: Task;
-  onUpdate?: (params: { taskId: string; updates: Partial<Task> }) => void;
+  onUpdate?: (a: { id: string; title: string; description: string }) => void;
   onDelete?: (taskId: string) => void;
   isOverlay?: boolean;
 }
 
-// eslint-disable-next-line max-lines-per-function
 export function TaskCard({ task, onUpdate, onDelete, isOverlay }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.description || "");
+  const ref = useRef<HTMLInputElement>(null);
 
   const {
     attributes,
@@ -40,23 +40,20 @@ export function TaskCard({ task, onUpdate, onDelete, isOverlay }: Props) {
     opacity: isDragging ? 0.5 : 1,
   };
 
-  const handleTitleSave = () => {
-    if (title.trim()) {
-      onUpdate?.({ taskId: task.id, updates: { title: title.trim() } });
-      setIsEditing(false);
-    }
-  };
+  const handleConfirm = () => {
+    if (title.trim() === "") return;
 
-  const handleDescriptionSave = () => {
     onUpdate?.({
-      taskId: task.id,
-      updates: { description: description.trim() },
+      title: title.trim(),
+      id: task.id,
+      description: description.trim(),
     });
+    setIsEditing(false);
   };
 
   const handleDescriptionKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      handleDescriptionSave();
+      handleConfirm();
     } else if (e.key === "Escape") {
       setDescription(task.description || "");
       setIsEditing(false);
@@ -65,16 +62,11 @@ export function TaskCard({ task, onUpdate, onDelete, isOverlay }: Props) {
 
   const handleTitleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      handleTitleSave();
+      handleConfirm();
     } else if (e.key === "Escape") {
       setTitle(task.title);
       setIsEditing(false);
     }
-  };
-
-  const handleConfirm = () => {
-    handleTitleSave();
-    handleDescriptionSave();
   };
 
   if (isOverlay) {
@@ -105,6 +97,7 @@ export function TaskCard({ task, onUpdate, onDelete, isOverlay }: Props) {
               <div className="space-y-2">
                 <Input
                   className="text-sm"
+                  ref={ref}
                   type="text"
                   value={title}
                   autoFocus
@@ -125,7 +118,12 @@ export function TaskCard({ task, onUpdate, onDelete, isOverlay }: Props) {
                 {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
                 <h4
                   className="font-medium text-gray-900 text-sm cursor-pointer hover:bg-gray-50 py-1 px-2 rounded"
-                  onClick={() => setIsEditing(true)}
+                  onClick={() => {
+                    setIsEditing(true);
+                    setTimeout(() => {
+                      ref.current?.setSelectionRange(0, 100);
+                    }, 0);
+                  }}
                 >
                   {task.title}
                 </h4>

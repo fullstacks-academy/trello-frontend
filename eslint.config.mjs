@@ -1,8 +1,12 @@
 import { defineConfig } from "@fullstacksjs/eslint-config";
 
 export default defineConfig({
+  typescript: {
+    projectService: {
+      allowDefaultProject: ["vitest.setup.ts"],
+    },
+  },
   rules: {
-    "vitest/prefer-lowercase-title": "off",
     "vitest/require-top-level-describe": "off",
   },
 });

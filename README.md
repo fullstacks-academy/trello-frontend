@@ -1,5 +1,3 @@
-~~Please run `pnpm verify` before commit~~
-
 # Session 1
 - [x] Formatter -> Prettier
 - [x] Git Hook -> Husky
@@ -10,7 +8,6 @@
 - [x] Type-check -> CI Workflow
 - [x] Linter
 - [x] Linter -> CI Workflow
-
 - [x] Deno Type-check
 - [x] Deno Type-check -> CI Workflow
 - [x] Deno formatter
@@ -23,8 +20,14 @@
 - [x] Test runner -> CI Workflow (Frontend)
 
 # Session 4
-- [ ] Component test
-- [ ] Component test -> CI Workflow
+- [x] Testing Library
+- [x] JSDom
+- [x] Test Doubles
+- [x] Test components
+- [ ] Test hooks
+- [ ] Mock
+- [ ] Mock API calls
+- [x] Component test -> CI Workflow
 
 # Session 5
 - [ ] UI Regression test
