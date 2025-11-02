@@ -102,17 +102,13 @@ export function Column({ column, tasks }: ColumnProps) {
                     deleteTaskMutation.mutate({ id: taskId })
                   }
                   onUpdate={(params) => {
-                    const currentTask = tasks.find(
-                      (t) => t.id === params.taskId,
-                    );
+                    const currentTask = tasks.find((t) => t.id === params.id);
                     if (currentTask) {
                       updateTaskMutation.mutate({
-                        id: params.taskId,
-                        title: params.updates.title || currentTask.title,
+                        id: params.id,
+                        title: params.title || currentTask.title,
                         description:
-                          params.updates.description ||
-                          currentTask.description ||
-                          "",
+                          params.description || currentTask.description || "",
                       });
                     }
                   }}
