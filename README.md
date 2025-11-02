@@ -20,14 +20,14 @@
 - [x] Test runner -> CI Workflow (Frontend)
 
 # Session 4
-- [ ] Component test
-- [ ] Testing Library
-- [ ] JSDom
-- [ ] Test Doubles
-- [ ] Test components
+- [x] Testing Library
+- [x] JSDom
+- [x] Test Doubles
+- [x] Test components
 - [ ] Test hooks
+- [ ] Mock
 - [ ] Mock API calls
-- [ ] Component test -> CI Workflow
+- [x] Component test -> CI Workflow
 
 # Session 5
 - [ ] UI Regression test
